@@ -27,11 +27,7 @@ const useStyles = makeStyles({
     link: {
         textDecoration: "none",
         color: "inherit"
-    },
-    starIcon: {
-        marginRight: "12px",
-        cursor: "pointer"
-    },
+    }
 })
 
 export default function PokemonDetail() {
