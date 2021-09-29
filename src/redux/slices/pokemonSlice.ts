@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {IListEntry} from "../../models/interfaces";
-import {getCaughtPokemons, setCaughtPokemons} from "../../utils/localStorageUtils";
+import {getCaughtPokemon, setCaughtPokemon} from "../../utils/localStorageUtils";
 
 // Define a type for the slice state
 interface PokemonState {
@@ -19,7 +19,7 @@ const initialState: PokemonState = {
     isFetchingList: true,
     isFetchingPokemon: true,
     pokemons: [],
-    caughtPokemons: getCaughtPokemons(),
+    caughtPokemons: getCaughtPokemon(),
     search: "",
     filter: "all",
     pokemon: {},
@@ -76,7 +76,7 @@ export const pokemonSlice = createSlice({
                 state.caughtPokemons.push(action.payload)
             }
 
-            setCaughtPokemons(state.caughtPokemons);
+            setCaughtPokemon(state.caughtPokemons);
         },
         setSearchText: (state, action: PayloadAction<string>) => {
             state.search = action.payload

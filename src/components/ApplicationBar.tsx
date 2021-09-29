@@ -3,9 +3,6 @@ import React from "react"
 import {makeStyles} from "@mui/styles";
 import {Link} from "wouter"
 
-interface IProps {
-}
-
 const useStyles = makeStyles({
     root: {
         boxShadow: "none !important"
@@ -16,15 +13,13 @@ const useStyles = makeStyles({
     }
 })
 
-export default function ApplicationBar(props: IProps) {
+export default function ApplicationBar() {
 
     const classes = useStyles();
 
     return <AppBar position="static" className={classes.root}>
-        <Toolbar >
-            <Typography
-                variant="h6"
-            >
+        <Toolbar>
+            <Typography variant="h6">
                 <Link to={"/"} className={classes.link}>
                     7Days Pokédex
                 </Link>

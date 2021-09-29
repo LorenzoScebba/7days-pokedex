@@ -1,13 +1,13 @@
-const caughtPokemonsKey = "pokemons:caught";
+const caughtPokemonKey = "pokemon:caught";
 
-export const getCaughtPokemons = () => {
-    const result = localStorage.getItem(caughtPokemonsKey);
+export const getCaughtPokemon = () => {
+    const result = localStorage.getItem(caughtPokemonKey);
     if(result)
         return JSON.parse(result);
 
     return []
 }
 
-export const setCaughtPokemons = (pokemons: string[]) => {
-    localStorage.setItem(caughtPokemonsKey, JSON.stringify(pokemons));
+export const setCaughtPokemon = (values: string[]) => {
+    localStorage.setItem(caughtPokemonKey, JSON.stringify(values));
 }

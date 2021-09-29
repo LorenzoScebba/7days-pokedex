@@ -7,7 +7,6 @@ import PokemonDetail from "./pages/PokemonDetail";
 import {useAppDispatch} from "./redux/hooks";
 
 function App() {
-
     const dispatch = useAppDispatch();
 
     useEffect(() => {

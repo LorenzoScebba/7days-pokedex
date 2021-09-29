@@ -3,3 +3,9 @@ export interface IListEntry {
     name: string;
     url: string;
 }
+
+export interface ITableEntry {
+    id: string;
+    name: string;
+    caught: boolean;
+}

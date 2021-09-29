@@ -1,7 +1,6 @@
 import React from "react"
-import {IListEntry} from "../models/interfaces";
+import {ITableEntry} from "../models/interfaces";
 import {
-    Icon,
     Table,
     TableBody,
     TableCell,
@@ -16,20 +15,16 @@ import {makeStyles} from "@mui/styles";
 import {useAppDispatch, useAppSelector} from "../redux/hooks";
 import {setPage} from "../redux/slices/pokemonSlice";
 import startCase from "lodash/startCase";
+import CaughtIcon from "./CaughtIcon";
 
 interface IProps {
-    rows: IListEntry[]
-    caughtPokemons: string[]
+    rows: ITableEntry[]
     onCaught: (name: string) => void;
     onClick: (v: string) => void;
     searchMode: boolean;
 }
 
 const useStyles = makeStyles({
-    starIcon: {
-        marginRight: "12px",
-        cursor: "pointer"
-    },
     row: {
         transition: "box-shadow 0.2s ease",
         "&:hover": {
@@ -83,9 +78,7 @@ export default function PokemonTable(props: IProps) {
                             {startCase(row.name)}
                         </TableCell>
                         <TableCell component="th" scope="row" align={"right"}>
-                            <Icon className={classes.starIcon} onClick={() => props.onCaught(row.name)}>
-                                {props.caughtPokemons.includes(row.name) ? "star" : "star_outline"}
-                            </Icon>
+                            <CaughtIcon caught={row.caught} name={row.name} onToggle={(v) => props.onCaught(v)} />
                         </TableCell>
                     </TableRow>
                 ))}

@@ -5,6 +5,7 @@ import {makeStyles} from "@mui/styles";
 import PokemonTable from "../components/PokemonTable";
 import {setFilter, setSearchText, toggleCaughtPokemon} from "../redux/slices/pokemonSlice";
 import {useLocation} from "wouter";
+import {ITableEntry} from "../models/interfaces";
 
 const useStyles = makeStyles({
     root: {
@@ -50,28 +51,27 @@ export default function PokemonList() {
                 <MenuItem value={"caught"}>Show caught only</MenuItem>
                 <MenuItem value={"remaining"}>Show not caught</MenuItem>
             </Select>
-           <Tooltip title={"Insert at least 2 characters to search"}>
-               <TextField
-                   variant={"standard"}
-                   placeholder={"Search Pokemon"}
-                   value={search}
-                   onChange={v => {
-                       dispatch(setSearchText(v.target.value))
-                   }}
-                   InputProps={{
-                       startAdornment: <InputAdornment position="start">
-                           <Icon>search</Icon>
-                       </InputAdornment>,
-                   }}
-               />
-           </Tooltip>
+            <Tooltip title={"Insert at least 2 characters to search"}>
+                <TextField
+                    variant={"standard"}
+                    placeholder={"Search Pokemon"}
+                    value={search}
+                    onChange={v => {
+                        dispatch(setSearchText(v.target.value))
+                    }}
+                    InputProps={{
+                        startAdornment: <InputAdornment position="start">
+                            <Icon>search</Icon>
+                        </InputAdornment>,
+                    }}
+                />
+            </Tooltip>
         </div>
         <PokemonTable
             // Pokemon with shortest name is "mew"
             searchMode={search.length >= 2}
-            rows={rows}
+            rows={rows.map(r => ({name: r.name, id: r.id, caught: caught.includes(r.name)} as ITableEntry))}
             onCaught={(value) => dispatch(toggleCaughtPokemon(value))}
-            caughtPokemons={caught}
             onClick={(v) => {
                 setLocation(`/${v}`)
             }}
