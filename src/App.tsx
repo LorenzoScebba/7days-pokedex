@@ -1,26 +1,29 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {useEffect} from 'react';
+import ApplicationBar from "./components/ApplicationBar";
+import {fetchAllPokemons} from "./redux/slices/pokemonSlice";
+import {Route, Switch} from "wouter";
+import PokemonList from "./pages/PokemonList";
+import PokemonDetail from "./pages/PokemonDetail";
+import {useAppDispatch} from "./redux/hooks";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        dispatch(fetchAllPokemons());
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
+    return (
+        <div>
+            <ApplicationBar/>
+            <Switch>
+                <Route path="/" component={PokemonList} />
+                <Route path="/:id" component={PokemonDetail} />
+            </Switch>
+        </div>
+    );
 }
 
 export default App;
