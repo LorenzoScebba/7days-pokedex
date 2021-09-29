@@ -23,6 +23,7 @@ export default function PokemonLocations(props: IProps) {
     const classes = useStyles();
 
     const locationsReduced = expanded ? locations : locations.slice(0,5);
+    const showExtra = locations.length > 5;
 
     return (
         <>
@@ -31,15 +32,15 @@ export default function PokemonLocations(props: IProps) {
             </Typography>
             <Typography variant="body2" color="text.primary">
                 {locationsReduced.map((l: any) => {
-                    return <li>
+                    return <li key={l.location_area.name}>
                         {startCase(l.location_area.name)}
                     </li>
                 })}
             </Typography>
-            {!expanded && <Typography className={classes.link} marginTop={1} variant="body2" color="text.secondary" onClick={() => setExpanded(true)}>
+            {showExtra && !expanded && <Typography className={classes.link} marginTop={1} variant="body2" color="text.secondary" onClick={() => setExpanded(true)}>
                 Expand...
             </Typography>}
-            {expanded && <Typography className={classes.link} marginTop={1} variant="body2" color="text.secondary" onClick={() => setExpanded(false)}>
+            {showExtra && expanded && <Typography className={classes.link} marginTop={1} variant="body2" color="text.secondary" onClick={() => setExpanded(false)}>
                 Reduce...
             </Typography>}
         </>

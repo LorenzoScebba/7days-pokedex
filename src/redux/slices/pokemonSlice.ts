@@ -12,6 +12,7 @@ interface PokemonState {
     filter: "all" | "caught" | "remaining"
     pokemon: any
     page: number
+    itemsPerPage: number
 }
 
 // Define the initial state using that type
@@ -23,7 +24,8 @@ const initialState: PokemonState = {
     search: "",
     filter: "all",
     pokemon: {},
-    page: 0
+    page: 0,
+    itemsPerPage: 15,
 }
 
 export const fetchAllPokemons = createAsyncThunk(
@@ -99,6 +101,9 @@ export const pokemonSlice = createSlice({
         },
         setPage: (state, action: PayloadAction<number>) => {
             state.page = action.payload;
+        },
+        setItemsPerPage: (state, action: PayloadAction<number>) => {
+            state.itemsPerPage = action.payload;
         }
     },
     extraReducers: (builder) => {
@@ -124,4 +129,4 @@ export const pokemonSlice = createSlice({
     },
 })
 
-export const {toggleCaughtPokemon, setSearchText, setFilter, setPage} = pokemonSlice.actions
+export const {toggleCaughtPokemon, setSearchText, setFilter, setPage, setItemsPerPage} = pokemonSlice.actions

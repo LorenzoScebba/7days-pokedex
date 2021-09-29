@@ -8,12 +8,12 @@ import {
     TableFooter,
     TableHead,
     TablePagination,
-    TableRow
+    TableRow, Typography
 } from "@mui/material";
 import TablePaginationActions from "@mui/material/TablePagination/TablePaginationActions";
 import {makeStyles} from "@mui/styles";
 import {useAppDispatch, useAppSelector} from "../redux/hooks";
-import {setPage} from "../redux/slices/pokemonSlice";
+import {setItemsPerPage, setPage} from "../redux/slices/pokemonSlice";
 import startCase from "lodash/startCase";
 import CaughtIcon from "./CaughtIcon";
 
@@ -31,13 +31,21 @@ const useStyles = makeStyles({
             boxShadow: "rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px",
             cursor: "pointer",
         }
+    },
+    nodata: {
+        display: "grid",
+        placeContent: "center",
+        textAlign: "center",
+        "& > img": {
+            marginTop: 32
+        }
     }
 })
 
 export default function PokemonTable(props: IProps) {
 
     const classes = useStyles();
-    const [rowsPerPage, setRowsPerPage] = React.useState(15);
+    const rowsPerPage = useAppSelector(p => p.pokemon.itemsPerPage)
     const page = useAppSelector(p => p.pokemon.page);
     const dispatch = useAppDispatch();
     const {rows} = props;
@@ -52,9 +60,17 @@ export default function PokemonTable(props: IProps) {
     const handleChangeRowsPerPage = (
         event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     ) => {
-        setRowsPerPage(parseInt(event.target.value, 10));
+        dispatch(setItemsPerPage(parseInt(event.target.value, 10)))
         dispatch(setPage(0))
     };
+
+    if(rows.length === 0)
+        return <div className={classes.nodata}>
+            <Typography>
+                No data found, Psyduck is sad :(
+            </Typography>
+            <img alt={"Psyduck is crying"} src={"https://cdn2.bulbagarden.net/upload/thumb/5/53/054Psyduck.png/600px-054Psyduck.png"} />
+        </div>
 
     return <TableContainer>
         <Table stickyHeader={true} sx={{ minWidth: 500 }} aria-label="custom pagination table">
@@ -83,7 +99,7 @@ export default function PokemonTable(props: IProps) {
                     </TableRow>
                 ))}
             </TableBody>
-            <TableFooter>
+            {!props.searchMode && rows.length > rowsPerPage && <TableFooter>
                 <TableRow>
                     <TablePagination
                         rowsPerPageOptions={[10, 15, 20, 30, 40, 50]}
@@ -99,7 +115,7 @@ export default function PokemonTable(props: IProps) {
                         ActionsComponent={TablePaginationActions}
                     />
                 </TableRow>
-            </TableFooter>
+            </TableFooter>}
         </Table>
     </TableContainer>
 }
