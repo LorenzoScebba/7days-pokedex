@@ -5,7 +5,7 @@ import startCase from "lodash/startCase";
 interface IProps {
     name: string;
     id: string;
-    description: string;
+    description?: string;
 }
 
 export default function PokemonBasicContent(props: IProps) {

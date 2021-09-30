@@ -10,21 +10,20 @@ const useStyles = makeStyles({
 })
 
 interface IProps {
-    onToggle: (name: string) => void;
-    name: string;
+    onToggle: () => void;
     caught: boolean;
 }
 
 export default function CaughtIcon(props: IProps) {
 
     const classes = useStyles();
-    const {name, caught} = props;
+    const {caught} = props;
 
     return (
         <Icon className={classes.starIcon} onClick={e => {
             e.preventDefault();
             e.stopPropagation();
-            props.onToggle(name)
+            props.onToggle()
         }}>
             {caught ? "star" : "star_outline"}
         </Icon>

@@ -9,3 +9,9 @@ export interface ITableEntry {
     name: string;
     caught: boolean;
 }
+
+export interface ILocation {
+    location_area: {
+        name: string
+    }
+}

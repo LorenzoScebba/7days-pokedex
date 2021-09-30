@@ -16,7 +16,7 @@ interface PokemonState {
 }
 
 // Define the initial state using that type
-const initialState: PokemonState = {
+export const initialState: PokemonState = {
     isFetchingList: true,
     isFetchingPokemon: true,
     pokemons: [],

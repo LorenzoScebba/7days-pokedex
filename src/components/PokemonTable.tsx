@@ -8,27 +8,30 @@ import {
     TableFooter,
     TableHead,
     TablePagination,
-    TableRow, Typography
+    TableRow,
+    Typography
 } from "@mui/material";
 import TablePaginationActions from "@mui/material/TablePagination/TablePaginationActions";
 import {makeStyles} from "@mui/styles";
-import {useAppDispatch, useAppSelector} from "../redux/hooks";
-import {setItemsPerPage, setPage} from "../redux/slices/pokemonSlice";
 import startCase from "lodash/startCase";
 import CaughtIcon from "./CaughtIcon";
 
 interface IProps {
     rows: ITableEntry[]
+    rowsPerPage: number;
+    page: number;
+    searchMode: boolean;
     onCaught: (name: string) => void;
     onClick: (v: string) => void;
-    searchMode: boolean;
+    onPageChange: (_: any, newPage: number) => void;
+    onRowsPerPageChange: (event: any) => void;
 }
 
 const useStyles = makeStyles({
     row: {
         transition: "box-shadow 0.2s ease",
         "&:hover": {
-            boxShadow: "rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px",
+            boxShadow: "rgb(0 0 0 / 16%) 0px 0px 12px 0px, rgb(0 0 0 / 6%) 0px 0px 0px 1px",
             cursor: "pointer",
         }
     },
@@ -45,24 +48,7 @@ const useStyles = makeStyles({
 export default function PokemonTable(props: IProps) {
 
     const classes = useStyles();
-    const rowsPerPage = useAppSelector(p => p.pokemon.itemsPerPage)
-    const page = useAppSelector(p => p.pokemon.page);
-    const dispatch = useAppDispatch();
-    const {rows} = props;
-
-    const handleChangePage = (
-        event: React.MouseEvent<HTMLButtonElement> | null,
-        newPage: number,
-    ) => {
-        dispatch(setPage(newPage))
-    };
-
-    const handleChangeRowsPerPage = (
-        event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    ) => {
-        dispatch(setItemsPerPage(parseInt(event.target.value, 10)))
-        dispatch(setPage(0))
-    };
+    const {rows, rowsPerPage, page, onPageChange, onRowsPerPageChange} = props;
 
     if(rows.length === 0)
         return <div className={classes.nodata}>
@@ -88,13 +74,13 @@ export default function PokemonTable(props: IProps) {
                 ).map((row) => (
                     <TableRow key={row.name} className={classes.row} onClick={() => props.onClick(row.id)}>
                         <TableCell component="th" scope="row" width={256} align={"center"}>
-                            {row.id}
+                            #{row.id}
                         </TableCell>
                         <TableCell component="th" scope="row">
                             {startCase(row.name)}
                         </TableCell>
                         <TableCell component="th" scope="row" align={"right"}>
-                            <CaughtIcon caught={row.caught} name={row.name} onToggle={(v) => props.onCaught(v)} />
+                            <CaughtIcon caught={row.caught} onToggle={() => props.onCaught(row.name)} />
                         </TableCell>
                     </TableRow>
                 ))}
@@ -110,8 +96,8 @@ export default function PokemonTable(props: IProps) {
                         SelectProps={{
                             native: true,
                         }}
-                        onPageChange={handleChangePage}
-                        onRowsPerPageChange={handleChangeRowsPerPage}
+                        onPageChange={onPageChange}
+                        onRowsPerPageChange={onRowsPerPageChange}
                         ActionsComponent={TablePaginationActions}
                     />
                 </TableRow>

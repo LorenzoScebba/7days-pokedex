@@ -21,10 +21,14 @@ export default function EvolvesFrom(props: IProps) {
     const classes = useStyles();
     const {name, url} = props;
 
+    const finalUrl = url
+        .split("https://pokeapi.co/api/v2/pokemon-species/")[1]
+        ?.replace("/", "");
+
     return (
         <Typography variant="body2" color="text.primary" marginTop={3}>
             <Link className={classes.link}
-                  to={`/${url.split("https://pokeapi.co/api/v2/pokemon-species/")[1].replace("/", "")}`}>
+                  to={`/${finalUrl}`}>
                 {`Evolves from ${startCase(name)}`}
             </Link>
         </Typography>

@@ -2,9 +2,10 @@ import React, {useState} from 'react'
 import {Typography} from "@mui/material";
 import startCase from "lodash/startCase";
 import {makeStyles} from "@mui/styles";
+import {ILocation} from "../../models/interfaces";
 
 interface IProps {
-    locations: any;
+    locations: ILocation[];
 }
 
 const useStyles = makeStyles({
@@ -15,6 +16,7 @@ const useStyles = makeStyles({
     }
 })
 
+const MAX_LOCATIONS = 3;
 
 export default function PokemonLocations(props: IProps) {
 
@@ -22,8 +24,8 @@ export default function PokemonLocations(props: IProps) {
     const [expanded, setExpanded] = useState(false);
     const classes = useStyles();
 
-    const locationsReduced = expanded ? locations : locations.slice(0,5);
-    const showExtra = locations.length > 5;
+    const locationsReduced = expanded ? locations : locations.slice(0,MAX_LOCATIONS);
+    const showExtra = locations.length > MAX_LOCATIONS;
 
     return (
         <>
@@ -31,7 +33,7 @@ export default function PokemonLocations(props: IProps) {
                 Can be found in the following locations
             </Typography>
             <Typography variant="body2" color="text.primary">
-                {locationsReduced.map((l: any) => {
+                {locationsReduced.map(l => {
                     return <li key={l.location_area.name}>
                         {startCase(l.location_area.name)}
                     </li>

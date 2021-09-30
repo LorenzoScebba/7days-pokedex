@@ -20,7 +20,7 @@ export default function ApplicationBar() {
     return <AppBar position="static" className={classes.root}>
         <Toolbar>
             <Typography variant="h6">
-                <Link to={"/"} className={classes.link}>
+                <Link data-testid={"appbar-linkto-root"} to={"/"} className={classes.link}>
                     7Days Pokédex
                 </Link>
             </Typography>

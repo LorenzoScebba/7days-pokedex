@@ -1,6 +1,6 @@
 import React, {useEffect} from "react"
 import {useRoute} from "wouter";
-import {Card, CardActionArea, CardContent, CardMedia, Container} from "@mui/material";
+import {Card, CardActionArea, CardContent, CardHeader, CardMedia, Container, Icon} from "@mui/material";
 import {useAppDispatch, useAppSelector} from "../redux/hooks";
 import {
     fetchPokemon,
@@ -14,6 +14,7 @@ import PokemonLocations from "../components/CardContent/PokemonLocations";
 import EvolvesFrom from "../components/CardContent/EvolvesFrom";
 import PokemonBasicContent from "../components/CardContent/PokemonBasicContent";
 import CaughtIcon from "../components/CaughtIcon";
+import {Link} from "wouter"
 
 const useStyles = makeStyles({
     root: {
@@ -27,6 +28,17 @@ const useStyles = makeStyles({
     link: {
         textDecoration: "none",
         color: "inherit"
+    },
+    toolbar: {
+        display: "flex",
+        paddingBottom: "16px",
+        borderBottom: "1px solid rgba(0, 0, 0, 0.12)",
+        "& > span:first-of-type": {
+            cursor: "pointer"
+        },
+        "& > span:last-of-type": {
+            marginLeft: "auto"
+        }
     }
 })
 
@@ -53,7 +65,12 @@ export default function PokemonDetail() {
     return <Container className={classes.root}>
         {pokemon.id && <Card sx={{display: "flex"}}>
             <CardContent className={classes.content}>
-                <CaughtIcon caught={wasCaught} name={pokemon.name} onToggle={(v) => dispatch(toggleCaughtPokemon(v))} />
+                <div className={classes.toolbar}>
+                    <Link to={"/"}>
+                        <Icon>arrow_back</Icon>
+                    </Link>
+                    <CaughtIcon caught={wasCaught} onToggle={() => dispatch(toggleCaughtPokemon(pokemon.name))} />
+                </div>
                 <PokemonBasicContent name={pokemon.name} id={pokemon.id} description={pokemon.description} />
 
                 {pokemon.locations?.length > 0 && <PokemonLocations locations={pokemon.locations} />}

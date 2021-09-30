@@ -3,7 +3,7 @@ import {useAppDispatch, useAppSelector} from "../redux/hooks";
 import {Container, Icon, InputAdornment, MenuItem, Select, TextField, Tooltip} from "@mui/material";
 import {makeStyles} from "@mui/styles";
 import PokemonTable from "../components/PokemonTable";
-import {setFilter, setSearchText, toggleCaughtPokemon} from "../redux/slices/pokemonSlice";
+import {setFilter, setItemsPerPage, setPage, setSearchText, toggleCaughtPokemon} from "../redux/slices/pokemonSlice";
 import {useLocation} from "wouter";
 import {ITableEntry} from "../models/interfaces";
 
@@ -23,6 +23,9 @@ const useStyles = makeStyles({
     }
 })
 
+// Pokemon with shortest name is "mew"
+const SEARCH_MODE_LENGTH = 2
+
 export default function PokemonList() {
 
     const classes = useStyles();
@@ -32,14 +35,25 @@ export default function PokemonList() {
     const search = useAppSelector(s => s.pokemon.search)
     const caught = useAppSelector(s => s.pokemon.caughtPokemons)
     const filter = useAppSelector(s => s.pokemon.filter)
+    const rowsPerPage = useAppSelector(p => p.pokemon.itemsPerPage)
+    const page = useAppSelector(p => p.pokemon.page);
 
-    let rows = pokemons && search.length >= 2 ? pokemons.filter(p => p.name.toLowerCase().includes(search.toLowerCase())) : pokemons;
+    let rows = pokemons && search.length >= SEARCH_MODE_LENGTH ? pokemons.filter(p => p.name.toLowerCase().includes(search.toLowerCase())) : pokemons;
 
     if (filter === "caught") {
         rows = rows.filter(p => caught.includes(p.name))
     } else if (filter === "remaining") {
         rows = rows.filter(p => !caught.includes(p.name))
     }
+
+    const onPageChange = (_: any, newPage: number) => {
+        dispatch(setPage(newPage))
+    };
+
+    const onRowsPerPageChange = (event: any) => {
+        dispatch(setItemsPerPage(parseInt(event.target.value, 10)))
+        dispatch(setPage(0))
+    };
 
     return <Container className={classes.root} maxWidth={"xl"}>
         <div className={classes.toolbar}>
@@ -68,13 +82,16 @@ export default function PokemonList() {
             </Tooltip>
         </div>
         <PokemonTable
-            // Pokemon with shortest name is "mew"
-            searchMode={search.length >= 2}
+            searchMode={search.length >= SEARCH_MODE_LENGTH}
             rows={rows.map(r => ({name: r.name, id: r.id, caught: caught.includes(r.name)} as ITableEntry))}
             onCaught={(value) => dispatch(toggleCaughtPokemon(value))}
             onClick={(v) => {
                 setLocation(`/${v}`)
             }}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={onPageChange}
+            onRowsPerPageChange={onRowsPerPageChange}
         />
     </Container>
 }
