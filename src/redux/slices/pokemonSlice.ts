@@ -1,6 +1,7 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {IListEntry} from "../../models/interfaces";
 import {getCaughtPokemon, setCaughtPokemon} from "../../utils/localStorageUtils";
+import {ApiBaseUrl} from "../../models/constants";
 
 // Define a type for the slice state
 interface PokemonState {
@@ -31,11 +32,11 @@ export const initialState: PokemonState = {
 export const fetchAllPokemons = createAsyncThunk(
     'pokemon/fetchAll',
     async () => {
-        const response = await fetch("https://pokeapi.co/api/v2/pokemon?limit=-1");
+        const response = await fetch(`${ApiBaseUrl}/pokemon?limit=-1`);
         const jsonResponse = await response.json();
 
         return jsonResponse.results.map((d: any) => ({
-            id: d.url.split("https://pokeapi.co/api/v2/pokemon/")[1].replace("/", ""),
+            id: d.url.split(`${ApiBaseUrl}/pokemon/`)[1].replace("/", ""),
             name: d.name,
             url: d.url,
         } as IListEntry));
@@ -45,7 +46,7 @@ export const fetchAllPokemons = createAsyncThunk(
 export const fetchPokemon = createAsyncThunk(
     'pokemon/fetch',
     async (pokemonId: string, _) => {
-        const pokemonReq = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonId}`);
+        const pokemonReq = await fetch(`${ApiBaseUrl}/pokemon/${pokemonId}`);
         return await pokemonReq.json();
     }
 )
@@ -54,7 +55,7 @@ export const fetchPokemonDescription = createAsyncThunk(
     'pokemon/fetchDescription',
     async (pokemonId: string, _) => {
 
-        const characteristic = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${pokemonId}`);
+        const characteristic = await fetch(`${ApiBaseUrl}/pokemon-species/${pokemonId}`);
         return await characteristic.json();
     }
 )
@@ -62,7 +63,7 @@ export const fetchPokemonDescription = createAsyncThunk(
 export const fetchPokemonLocations = createAsyncThunk(
     'pokemon/fetchLocation',
     async (pokemonId: string, _) => {
-        const canBeFound = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonId}/encounters`);
+        const canBeFound = await fetch(`${ApiBaseUrl}/pokemon/${pokemonId}/encounters`);
         return await canBeFound.json();
     }
 )

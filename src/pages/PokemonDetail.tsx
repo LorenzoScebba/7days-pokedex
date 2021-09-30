@@ -30,7 +30,8 @@ const useStyles = makeStyles({
     },
     toolbar: {
         display: "flex",
-        paddingBottom: "16px",
+        paddingBottom: "12px",
+        marginBottom: "16px",
         borderBottom: "1px solid rgba(0, 0, 0, 0.12)",
         "& > span:first-of-type": {
             cursor: "pointer"
