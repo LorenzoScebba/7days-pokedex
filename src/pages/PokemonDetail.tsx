@@ -1,6 +1,6 @@
 import React, {useEffect} from "react"
-import {useRoute} from "wouter";
-import {Card, CardActionArea, CardContent, CardHeader, CardMedia, Container, Icon} from "@mui/material";
+import {Link, useRoute} from "wouter";
+import {Card, CardActionArea, CardContent, CardMedia, Container, Icon} from "@mui/material";
 import {useAppDispatch, useAppSelector} from "../redux/hooks";
 import {
     fetchPokemon,
@@ -14,7 +14,6 @@ import PokemonLocations from "../components/CardContent/PokemonLocations";
 import EvolvesFrom from "../components/CardContent/EvolvesFrom";
 import PokemonBasicContent from "../components/CardContent/PokemonBasicContent";
 import CaughtIcon from "../components/CaughtIcon";
-import {Link} from "wouter"
 
 const useStyles = makeStyles({
     root: {
