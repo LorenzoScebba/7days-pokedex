@@ -79,7 +79,7 @@ export default function PokemonDetail() {
                 <CardMedia
                     component="img"
                     width={240}
-                    image={get(pokemon, "sprites.other.official-artwork.front_default", get(pokemon, "sprites.front_default"))}
+                    image={get(pokemon, "sprites.other.official-artwork.front_default") || get(pokemon, "sprites.front_default")}
                 />
             </CardActionArea>
         </Card>}
